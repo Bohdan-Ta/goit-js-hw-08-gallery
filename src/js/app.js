@@ -65,11 +65,20 @@ const galleryItems = [
 ];
 
 const galleryImg = document.querySelector('.js-gallery');
-console.log(galleryImg)
 
 const getGallery = options => {
-    return options.map(({ preview, description }) => {
-        return `<li><img src="${preview}" alt="${description}"></li>`}).join('')
+    return options.map(({ preview, original, description }) => {
+    return `<li class="gallery__item">
+    <a class="gallery__link"
+        href="${original}">
+            <img
+            class="gallery__image"
+            src="${preview}"
+            data-source="${original}"
+            alt="${description}"
+            />
+    </a>
+    </li>`}).join('')
 };
-
+console.log(getGallery)
 galleryImg.insertAdjacentHTML('afterbegin', getGallery(galleryItems));
