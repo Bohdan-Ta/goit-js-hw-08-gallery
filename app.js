@@ -64,17 +64,20 @@ const galleryItems = [
     },
 ];
 
-const galleryImg = document.querySelector('.js-gallery');
-//===========
-const modalEl = document.querySelector('.js-lightbox')
-const btnModalClose = document.querySelector(".lightbox__button")
-const imgModalEl = document.querySelector('.lightbox__image')
-//==================
 
+//============== created querySelector ===============
+const galleryImg = document.querySelector('.js-gallery');
+const modalEl = document.querySelector('.js-lightbox');
+const modalImgOpen = document.querySelector('.lightbox__image');
+const modalIconClose = document.querySelector('.lightbox__button');
+const modalClickInDivClose = document.querySelector('.lightbox__overlay');
+
+
+//==================  function for creat (render) gallery ===========
 const getGallery = options => {
     return options.map(({ preview, original, description }) => {
     return `<li class="gallery__item">
-    <a class="gallery__link"
+        <a class="gallery__link"
         href="${original}">
             <img
             class="gallery__image"
@@ -82,36 +85,35 @@ const getGallery = options => {
             data-source="${original}"
             alt="${description}"
             />
-    </a>
+        </a>
     </li>`}).join('')
 };
 galleryImg.insertAdjacentHTML('afterbegin', getGallery(galleryItems));
+//===================================================================
 
-
-//============
+//====================== addEventListener ==========================
 galleryImg.addEventListener('click', onModalOpen)
-btnModalClose.addEventListener('click', onModalClose)
+modalIconClose.addEventListener('click', onModalClose)
+modalClickInDivClose.addEventListener('click', onModalClose)
 
-const imgOrig = galleryItems.original
-
-function onModalOpen(event) {
-    event.preventDefault()
-    if (event.target.nodeName !== 'IMG') {
-        return
+//=================== open modal window============================
+function onModalOpen(evt) {
+    evt.preventDefault()
+    if (evt.target.nodeName !== 'IMG') {
+        return;
     }
     modalEl.classList.add('is-open')
-    imgModalEl.src = event.target.dataset.source
-    imgModalEl.alt = event.target.alt
-}
-
-function onModalClose(event) {
+    modalImgOpen.src = evt.target.dataset.source
+    modalImgOpen.alt = evt.target.alt
+};
+//============= close modal window 'icon' 'div'===================
+function onModalClose(evt) {
     modalEl.classList.remove('is-open')
-    imgModalEl.src = ''
-    imgModalEl.alt = ''
-}
+    modalImgOpen.src = ''
+    modalImgOpen.alt = ''
+};
 
-{/* <script>
-    document.addEventListener('keypress', function (e) {
-    if(e.keyCode === 27) document.getElementById('modal_id').hidden= 1;
-  });
-</script> */}
+// ============= close modal window 'esc'=========================
+document.addEventListener('keydown', function (e) {
+    if (e.keyCode == 27) { document.querySelector(onModalClose()) };
+});
