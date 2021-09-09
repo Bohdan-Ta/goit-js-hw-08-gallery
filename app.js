@@ -65,6 +65,11 @@ const galleryItems = [
 ];
 
 const galleryImg = document.querySelector('.js-gallery');
+//===========
+const modalEl = document.querySelector('.js-lightbox')
+const btnModalClose = document.querySelector(".lightbox__button")
+const imgModalEl = document.querySelector('.lightbox__image')
+//==================
 
 const getGallery = options => {
     return options.map(({ preview, original, description }) => {
@@ -80,5 +85,33 @@ const getGallery = options => {
     </a>
     </li>`}).join('')
 };
-console.log(getGallery)
 galleryImg.insertAdjacentHTML('afterbegin', getGallery(galleryItems));
+
+
+//============
+galleryImg.addEventListener('click', onModalOpen)
+btnModalClose.addEventListener('click', onModalClose)
+
+const imgOrig = galleryItems.original
+
+function onModalOpen(event) {
+    event.preventDefault()
+    if (event.target.nodeName !== 'IMG') {
+        return
+    }
+    modalEl.classList.add('is-open')
+    imgModalEl.src = event.target.dataset.source
+    imgModalEl.alt = event.target.alt
+}
+
+function onModalClose(event) {
+    modalEl.classList.remove('is-open')
+    imgModalEl.src = ''
+    imgModalEl.alt = ''
+}
+
+{/* <script>
+    document.addEventListener('keypress', function (e) {
+    if(e.keyCode === 27) document.getElementById('modal_id').hidden= 1;
+  });
+</script> */}
