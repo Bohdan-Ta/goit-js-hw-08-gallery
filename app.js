@@ -72,7 +72,6 @@ const modalImgOpen = document.querySelector('.lightbox__image');
 const modalIconClose = document.querySelector('.lightbox__button');
 const modalClickInDivClose = document.querySelector('.lightbox__overlay');
 
-
 //==================  function for creat (render) gallery ===========
 const getGallery = options => {
     return options.map(({ preview, original, description }) => {
@@ -96,24 +95,29 @@ galleryImg.addEventListener('click', onModalOpen)
 modalIconClose.addEventListener('click', onModalClose)
 modalClickInDivClose.addEventListener('click', onModalClose)
 
+//=================== modal window============================
+//================= replace attributes =========================
+function replaceAttributesModal(src, alt) {
+    modalImgOpen.src = src
+    modalImgOpen.alt = alt
+};
 //=================== open modal window============================
-function onModalOpen(evt) {
-    evt.preventDefault()
-    if (evt.target.nodeName !== 'IMG') {
+function onModalOpen(e) {
+    e.preventDefault()
+    if (e.target.nodeName !== 'IMG') {
         return;
     }
     modalEl.classList.add('is-open')
-    modalImgOpen.src = evt.target.dataset.source
-    modalImgOpen.alt = evt.target.alt
-};
-//============= close modal window 'icon' 'div'===================
-function onModalClose(evt) {
-    modalEl.classList.remove('is-open')
-    modalImgOpen.src = ''
-    modalImgOpen.alt = ''
-};
+    replaceAttributesModal(e.target.dataset.source, e.target.alt)
+   };
 
+//============= close modal window 'icon' 'div'===================
+function onModalClose(e) {
+    modalEl.classList.remove('is-open')
+    replaceAttributesModal(" ", " ")
+};
 // ============= close modal window 'esc'=========================
-document.addEventListener('keydown', function (e) {
-    if (e.keyCode == 27) { document.querySelector(onModalClose()) };
+window.addEventListener('keydown', function (e) {
+    if (e.code == 'Escape') { onModalClose() };
 });
+
